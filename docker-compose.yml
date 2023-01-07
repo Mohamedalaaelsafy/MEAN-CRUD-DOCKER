@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  frontend:
+    image: frontend
+    container_name: frontend
+    ports:
+     - "82:80"
+    depends_on:
+      - "backend"
+      - "db"
+        ##  - "mongoAdmin"
+        #  volumes:
+            #   - ./vol:/usr/share/nginx/html
+
+  backend:
+    image: backend
+    container_name: backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - "db"
+
+  db:
+    image: mongo:5.0.14
+    container_name: database
+    #   volumes:
+    #  - ./data:/data/db
+    ports:
+      - 8081:8081
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    ports:
+      - 8082:8081
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=db
+    depends_on:
+      - "db"
