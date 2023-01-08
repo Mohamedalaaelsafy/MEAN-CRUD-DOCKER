@@ -9,9 +9,17 @@ services:
     depends_on:
       - "backend"
       - "db"
-        ##  - "mongoAdmin"
-        #  volumes:
-            #   - ./vol:/usr/share/nginx/html
+    restart: always
+    volumes:
+      - ./conf/nginx/:/etc/nginx/conf.d/:ro
+
+        # certbot:
+        #image: certbot/certbot
+        # container_name: certbot
+        #command: certonly --webroot -w /var/www/certbot --force-renewal --email mohamedalaaelsafy@gmail.com -d sample.modesoventures.com --agree-tos
+        # volumes:
+        # - ./conf/certbot/conf:/etc/letsencrypt
+        #- ./conf/certbot/www:/var/www/certbot
 
   backend:
     image: backend
@@ -25,8 +33,8 @@ services:
   db:
     image: mongo:5.0.14
     container_name: database
-    #   volumes:
-    #  - ./data:/data/db
+    volumes:
+      - ./database/:/data/db/
     ports:
       - 8081:8081
 
@@ -37,5 +45,8 @@ services:
       - 8082:8081
     environment:
       - ME_CONFIG_MONGODB_SERVER=db
+      - ME_CONFIG_BASICAUTH_USERNAME=root
+      - ME_CONFIG_BASICAUTH_PASSWORD=root
+      - ME_CONFIG_SITE_BASEURL=/admin
     depends_on:
       - "db"
