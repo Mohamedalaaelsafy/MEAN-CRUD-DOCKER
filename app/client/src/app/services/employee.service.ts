@@ -6,7 +6,7 @@ import { Employee } from '../models/employee';
   providedIn: 'root'
 })
 export class EmployeeService {
-  readonly API_URL = 'http://sample.modesoventures.com/api/employees';
+  readonly API_URL = 'https://samplebe.modesoventures.com/api/employees';
   selectedEmployee: Employee;
   items: Employee[];
 
